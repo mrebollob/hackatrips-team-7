@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mrebollob/hackatrips-team-7#readme",
   "dependencies": {
+    "actions-on-google": "^1.7.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "impress.js": "^0.6.0",

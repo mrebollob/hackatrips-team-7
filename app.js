@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser')
 
 var minube = require('./minube');
+var dialogflow = require('./dialogflow');
 
 app.use(bodyParser.json())
 
@@ -13,6 +14,10 @@ app.use('/node_modules/impress', express.static(__dirname + '/node_modules/impre
 app.get('/presentation',function(req,res){
   res.sendFile(path.join(__dirname+'/public/presentation.html'));
 });
+
+app.post('/webhook', function (req, res) {
+  return dialogflow.webhook(req, res);
+})
 
 app.post('/api/cities', function (req, res) {
   var isSpain = req.body.result.parameters.isSpain === 'España'
