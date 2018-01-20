@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var bodyParser = require('body-parser')
 
@@ -6,9 +7,7 @@ var minube = require('./minube');
 
 app.use(bodyParser.json())
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.post('/api/cities', function (req, res) {
