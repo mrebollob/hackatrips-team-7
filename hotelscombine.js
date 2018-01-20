@@ -1,8 +1,5 @@
 var rp = require('request-promise');
 
-
-
-
 module.exports.getHotelsByCity = function(city) {
   var options = {
     uri: 'http://sandbox.hotelscombined.com/api/2.0/hotels',
