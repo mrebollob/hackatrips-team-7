@@ -8,7 +8,11 @@ var minube = require('./minube');
 app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/node_modules/impress', express.static(__dirname + '/node_modules/impress.js'));
 
+app.get('/presentation',function(req,res){
+  res.sendFile(path.join(__dirname+'/public/presentation.html'));
+});
 
 app.post('/cities', function (req, res) {
   var isSpain = false
