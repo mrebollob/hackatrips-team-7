@@ -5,6 +5,7 @@ var bodyParser = require('body-parser')
 
 var minube = require('./minube');
 var dialogflow = require('./dialogflow');
+var hotelscombine = require('./hotelscombine');
 
 app.use(bodyParser.json())
 
@@ -34,6 +35,12 @@ app.post('/api/cities', function (req, res) {
   return minube[functionName](isSpain)
     .then(cities => res.json(cities))
     .catch(err => res.json(err));
+})
+
+app.get('/api/hotels', function (req, res) {
+  return hotelscombine.getHotelsByCity(req.query.city)
+    .then(hotels => res.json(hotels))
+    .catch(err => res.json(err))
 })
 
 app.listen(3000, function () {
