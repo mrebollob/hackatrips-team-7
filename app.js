@@ -37,6 +37,26 @@ app.post('/api/cities', function (req, res) {
     .catch(err => res.json(err));
 })
 
+app.get('/api/cities', function (req, res) {
+  var isSpain = req.query.isSpain
+  var type = req.query.type
+
+  switch(type) {
+    case 'city':
+      functionName = 'getBestCities';
+    case 'beach':
+      functionName = 'getBestBeachCities';
+    case 'mountain':
+      functionName = 'getBestMountainCities';
+    case 'rural':
+      functionName = 'getBestRuralCities'
+  }
+
+  return minube[functionName](isSpain)
+    .then(cities => res.json(cities))
+    .catch(err => res.json(err));
+})
+
 app.get('/api/hotels', function (req, res) {
   return hotelscombine.getHotelsByCity(req.query.city)
     .then(hotels => res.json(hotels))
