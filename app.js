@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 var minube = require('./minube');
 var dialogflow = require('./dialogflow');
 var hotelscombine = require('./hotelscombine');
+var bbva = require('./bbva');
 
 app.use(bodyParser.json())
 
@@ -59,7 +60,12 @@ app.get('/api/cities', function (req, res) {
 })
 
 app.get('/api/hotels', function (req, res) {
-  return hotelscombine.getHotelsByCity(req.query.city)
+  return bbva.getUserSpend()
+    .then(amount => {
+      var fromPrice = amount * 0.05
+      var toPrice = amount * 0.10
+      return hotelscombine.getHotelsByCity(req.query.city, fromPrice, toPrice)
+    })
     .then(hotels => res.json(hotels))
     .catch(err => res.json(err))
 })
