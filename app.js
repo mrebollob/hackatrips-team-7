@@ -4,6 +4,8 @@ var app = express();
 var bodyParser = require('body-parser')
 
 var minube = require('./minube');
+var dialogflow = require('./dialogflow');
+var hotelscombine = require('./hotelscombine');
 
 app.use(bodyParser.json())
 
@@ -14,21 +16,52 @@ app.get('/presentation',function(req,res){
   res.sendFile(path.join(__dirname+'/public/presentation.html'));
 });
 
-app.post('/api/cities', function (req, res) {
-  var isSpain = req.body.result.parameters.isSpain === 'España'
-  var type = req.body.result.parameters.tipoCiudad
+// app.post('/webhook', function (req, res) {
+//   return dialogflow.webhook(req, res);
+// })
+
+// app.post('/api/cities', function (req, res) {
+//   var isSpain = req.body.result.parameters.isSpain === 'España'
+//   var type = req.body.result.parameters.tipoCiudad
   
+//   var functionName = 'getBestCities';
+//   if (type.indexOf('ciudad') > -1) functionName = 'getBestCities'
+//   if (type.indexOf('playa') > -1) functionName = 'getBestBeachCities'
+//   if (type.indexOf('montaña') > -1) functionName = 'getBestMountainCities'
+//   if (type.indexOf('rural') > -1) functionName = 'getBestRuralCities'
+  
+//   console.log(req.body.result.parameters)
+
+//   return minube[functionName](isSpain)
+//     .then(cities => res.json(cities))
+//     .catch(err => res.json(err));
+// })
+
+app.get('/api/cities', function (req, res) {
+  var isSpain = req.query.isSpain
+  var type = req.query.type
+
   var functionName = 'getBestCities';
-  if (type.indexOf('ciudad') > -1) functionName = 'getBestCities'
-  if (type.indexOf('playa') > -1) functionName = 'getBestBeachCities'
-  if (type.indexOf('montaña') > -1) functionName = 'getBestMountainCities'
-  if (type.indexOf('rural') > -1) functionName = 'getBestRuralCities'
-  
-  console.log(req.body.result.parameters)
+  switch(type) {
+    case 'city':
+      functionName = 'getBestCities';
+    case 'beach':
+      functionName = 'getBestBeachCities';
+    case 'mountain':
+      functionName = 'getBestMountainCities';
+    case 'rural':
+      functionName = 'getBestRuralCities'
+  }
 
   return minube[functionName](isSpain)
     .then(cities => res.json(cities))
     .catch(err => res.json(err));
+})
+
+app.get('/api/hotels', function (req, res) {
+  return hotelscombine.getHotelsByCity(req.query.city)
+    .then(hotels => res.json(hotels))
+    .catch(err => res.json(err))
 })
 
 app.listen(3000, function () {
