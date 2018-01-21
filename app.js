@@ -34,7 +34,12 @@ app.get('/api/cities', function (req, res) {
   }
 
   return minube[functionName](isSpain)
-    .then(cities => res.json(cities.slice(0, 3)))
+    .then(cities => {
+      var cities = cities.slice(0, 3)
+      if (cities.length < 3) cities.push(cities[0])
+      if (cities.length < 3) cities.push(cities[0])
+      return res.json(cities)
+    })
     .catch(err => res.json(err));
 })
 
