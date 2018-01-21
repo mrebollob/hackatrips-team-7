@@ -38,7 +38,7 @@ app.get('/presentation',function(req,res){
 // })
 
 app.get('/api/cities', function (req, res) {
-  var isSpain = req.query.isSpain
+  var isSpain = req.query.isSpain === 'true'
   var type = req.query.type
 
   var functionName = 'getBestCities';
