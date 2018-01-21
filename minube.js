@@ -38,6 +38,7 @@ function getBestCitiesByPoiId(isSpain, poiId) {
 
   return rp(options)
     .then(pois => {
+      pois = pois.filter(p => p.picture_url)
       if (!isSpain) return pois.filter(p => p.country_id !== '63')
       return pois
     })
