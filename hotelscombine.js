@@ -13,8 +13,12 @@ module.exports.getHotelsByCity = function(city, fromPrice, toPrice) {
       maxPrice: toPrice
     }
   }
-console.log(options)
+
   return rp(options)
+    .then(res => {
+      res.results = res.results.slice(0, 3)
+      return res
+    })
     .catch(err => {
       console.log(err)
     })
